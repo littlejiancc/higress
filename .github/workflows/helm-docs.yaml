@@ -65,25 +65,21 @@ jobs:
                 {"role": "user", "content": $content}
               ],
               temperature: 1.1,
-              stream: false
+              stream: true
             }')
 
-          RESPONSE=$(curl -s -X POST "$API_URL" \
+          curl -s -X POST "$API_URL" \
             -H "Content-Type: application/json" \
             -H "Authorization: Bearer $API_KEY" \
-            -d "$PAYLOAD")
+            -d "$PAYLOAD" | \
+            jq -c -r '.choices[] | .message.content' > README.zh.new.md
 
-          echo "response: $RESPONSE"
-
-          TRANSLATED_CONTENT=$(echo "$RESPONSE" | jq -r '.choices[0].message.content')
-
-          if [ -z "$TRANSLATED_CONTENT" ]; then
-            echo "Translation failed! Response: $RESPONSE"
+          if [ -f "README.zh.new.md" ]; then
+            echo "Translation completed and saved to README.zh.new.md."
+          else
+            echo "Translation failed or no content returned!"
             exit 1
           fi
-
-          echo "$TRANSLATED_CONTENT" > README.zh.new.md
-          echo "Translation completed and saved to README.zh.new.md."
 
       - name: Compare README.zh.md
         id: compare
