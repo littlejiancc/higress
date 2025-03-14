@@ -50,11 +50,14 @@ jobs:
         id: compare_readme
         run: |
           cd ./helm/higress
-          if git diff --exit-code HEAD README.md; then
-            echo "README.md has no changes. Skipping translation."
+          BASE_BRANCH=${{ github.event.pull_request.base.ref || 'main' }}
+
+          git fetch origin $BASE_BRANCH
+          if git diff --exit-code origin/$BASE_BRANCH -- README.md; then
+            echo "README.md has no changes in comparison to base branch. Skipping translation."
             echo "skip_translation=true" >> $GITHUB_ENV
           else
-            echo "README.md has changed. Proceeding with translation."
+            echo "README.md has changed in comparison to base branch. Proceeding with translation."
             echo "skip_translation=false" >> $GITHUB_ENV
           fi
 
