@@ -50,8 +50,8 @@ jobs:
         id: compare_readme
         run: |
           cd ./helm/higress
-          BASE_BRANCH=${{ github.event.pull_request.base.ref || 'main' }}
-          UPSTREAM_REPO=${{ github.event.pull_request.base.repo.clone_url }}
+          BASE_BRANCH=main
+          UPSTREAM_REPO=https://github.com/alibaba/higress.git
 
           TEMP_DIR=$(mktemp -d)
           git clone --depth 1 --branch $BASE_BRANCH $UPSTREAM_REPO $TEMP_DIR
