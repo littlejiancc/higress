@@ -8,7 +8,7 @@ Powered by Istio and Envoy, Higress realizes the integration of the triple gatew
 
 ```console
 helm repo add higress.io https://higress.io/helm-charts
-helm repo update test
+helm repo update
 ```
 
 ## Install
