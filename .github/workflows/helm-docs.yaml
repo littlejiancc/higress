@@ -81,14 +81,14 @@ jobs:
                 {"role": "user", "content": $content}
               ],
               temperature: 1.1,
-              stream: true
+              stream: false
             }')
 
           curl -s -X POST "$API_URL" \
             -H "Content-Type: application/json" \
             -H "Authorization: Bearer $API_KEY" \
             -d "$PAYLOAD" | \
-            jq -c -r '.choices[] | .message.content' > README.zh.new.md
+          jq -c -r '.choices[] | .message.content' > README.zh.new.md
 
           if [ -f "README.zh.new.md" ]; then
             echo "Translation completed and saved to README.zh.new.md."
